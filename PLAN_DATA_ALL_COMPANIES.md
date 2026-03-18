@@ -2,6 +2,8 @@
 
 **Goal:** Have Period + Revenue / SG&A / EBIT for every company in `auto_suppliers.xlsx`, preferably latest quarter (Q4 2025 / Q1 2026) where possible, else annual.
 
+**Implementation status (see bottom):** Phase 1.1–1.5 and Phase 2/3 scripts implemented. Run `python fetch_all_quarterly.py` to refresh; use `quarterly_overrides.json` for names where Yahoo/SEC have no data.
+
 **Current state (as of last run):**
 - **210 companies** in the workbook (66 Tier 1, 144 Tier 2), all with some financial data.
 - **38** have **quarterly** data (29 from SEC, 9 from Yahoo).
@@ -123,3 +125,13 @@
 | **3** | Automation | SEDAR+ fetcher; optional Yahoo-from-map; optional paid API; overrides refresh. |
 
 **Success metric:** Every one of the 210 companies has a defined source (SEC, Yahoo, SEDAR+, overrides, or annual FINANCIALS), and the number with latest-quarter data is maximized given current and Phase 3 data sources.
+
+---
+
+## Implemented (code in repo)
+
+- **Phase 1.1 (SEC):** `fetch_quarterly_sec.py` — Added `sec_cik_overrides.json` (optional name→CIK), `ACCEPT_ANY_LATEST_QUARTER` env to include latest available quarter, extra revenue concepts (`SalesRevenueGoodsNet`, `NetSales`), skip summary. `fetch_all_quarterly.py` uses same CIK overrides and env.
+- **Phase 1.3–1.5 (Yahoo):** `fetch_quarterly_global_yf.py` — Added Europe (Burelle, Melrose, Faurecia, Michelin, Vitesco), Japan (Nidec, Denso, Aisin, Nippon Steel, Sumitomo Electric, Hitachi), Other (Nexteer HK, Alfa Mexico). `SYMBOL_ALIASES` for Valeo, Denso, Nidec, Hitachi.
+- **ticker_source_map.json:** Added `yahoo_symbol` and `reporting_currency` for all non-US entries. `fetch_quarterly_global_yf` builds extra Yahoo candidates from the map so new companies can be added there without editing `GLOBAL_QUARTERLY`.
+- **Phase 2:** `list_companies_not_in_ticker_map.py` — Lists companies in `INCLUDE_DETAILS` not in ticker map; `--csv` writes `companies_not_in_ticker_map.csv` template for filling ticker/source/yahoo_symbol.
+- **Phase 3:** `validate_quarterly_overrides.py` — Validates `quarterly_overrides.json` keys against `INCLUDE_DETAILS` and schema (period, revenue_usd required).

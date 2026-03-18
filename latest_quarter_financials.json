@@ -1,66 +1,479 @@
 {
   "LINAMAR CORP": {
     "period": "Q4 2025",
-    "revenue_usd": 1831781490,
-    "sga_usd": 109108393,
-    "ebit_usd": 145255736,
+    "revenue_usd": 1832488822,
+    "sga_usd": 109150524,
+    "ebit_usd": 145311826,
     "source": "Yahoo Finance (LNR.TO)"
   },
   "MARTINREA INTERNATIONAL INC": {
     "period": "Q3 2025",
-    "revenue_usd": 867216546,
-    "sga_usd": 65240002,
-    "ebit_usd": 47462369,
+    "revenue_usd": 867551417,
+    "sga_usd": 65265194,
+    "ebit_usd": 47480697,
     "source": "Yahoo Finance (MRE.TO)"
   },
   "EXCO TECHNOLOGIES LTD": {
     "period": "Q4 2025",
-    "revenue_usd": 108891370,
-    "sga_usd": 10160000,
-    "ebit_usd": 5883638,
+    "revenue_usd": 108933418,
+    "sga_usd": 10163923,
+    "ebit_usd": 5885910,
     "source": "Yahoo Finance (XTC.TO)"
   },
   "AIRBOSS OF AMERICA CORP": {
     "period": "Q3 2025",
-    "revenue_usd": 73132190,
-    "sga_usd": 9388769,
-    "ebit_usd": -182794,
+    "revenue_usd": 73160430,
+    "sga_usd": 9392395,
+    "ebit_usd": -182865,
     "source": "Yahoo Finance (BOS.TO)"
   },
   "CONTINENTAL AKTIENGESELLSCHAFT": {
     "period": "Q4 2025",
-    "revenue_usd": 5687285299,
-    "sga_usd": 941580769,
-    "ebit_usd": 335624289,
+    "revenue_usd": 5690544158,
+    "sga_usd": 942120302,
+    "ebit_usd": 335816604,
     "source": "Yahoo Finance (CON.DE)"
   },
   "THYSSENKRUPP AG": {
     "period": "Q4 2025",
-    "revenue_usd": 8230240660,
-    "sga_usd": 1209622009,
-    "ebit_usd": -505154646,
+    "revenue_usd": 8234956652,
+    "sga_usd": 1210315132,
+    "ebit_usd": -505444103,
     "source": "Yahoo Finance (TKA.DE)"
   },
   "AB SKF": {
     "period": "Q4 2025",
-    "revenue_usd": 2332192702,
-    "sga_usd": 334929581,
-    "ebit_usd": 165925495,
+    "revenue_usd": 2336481329,
+    "sga_usd": 335545477,
+    "ebit_usd": 166230612,
     "source": "Yahoo Finance (SKF-B.ST)"
   },
   "HYUNDAI MOBIS CO LTD": {
-    "period": "Q3 2025",
-    "revenue_usd": 9957823432,
-    "sga_usd": 309479582,
-    "ebit_usd": 516904924,
+    "period": "Q4 2025",
+    "revenue_usd": 10206152503,
+    "sga_usd": 395757915,
+    "ebit_usd": 616826527,
     "source": "Yahoo Finance (012330.KS)"
   },
   "POSCO HOLDINGS INC": {
     "period": "Q3 2025",
-    "revenue_usd": 11434484838,
-    "sga_usd": 392566707,
-    "ebit_usd": 448569780,
+    "revenue_usd": 11441078847,
+    "sga_usd": 392793091,
+    "ebit_usd": 448828460,
     "source": "Yahoo Finance (005490.KS)"
+  },
+  "NIDEC CORP": {
+    "period": "Q3 2024",
+    "revenue_usd": 4040786847,
+    "sga_usd": 324060284,
+    "ebit_usd": 380149206,
+    "source": "Yahoo Finance (6594.T)"
+  },
+  "AGC INC": {
+    "period": "Q2 2024",
+    "revenue_usd": 3232247708,
+    "sga_usd": 582431066,
+    "ebit_usd": 200266615,
+    "source": "Yahoo Finance (5201.T)"
+  },
+  "ARKEMA": {
+    "period": "Q4 2025",
+    "revenue_usd": 2412607342,
+    "sga_usd": 244126064,
+    "ebit_usd": 28653294,
+    "source": "Yahoo Finance (AKE.PA)"
+  },
+  "BASF SE": {
+    "period": "Q4 2025",
+    "revenue_usd": 16081374639,
+    "sga_usd": 2535243440,
+    "ebit_usd": 916905403,
+    "source": "Yahoo Finance (BAS.DE)"
+  },
+  "BHARAT FORGE LTD": {
+    "period": "Q4 2025",
+    "revenue_usd": 43429340000,
+    "sga_usd": null,
+    "ebit_usd": 5010590000,
+    "source": "Yahoo Finance (BHARATFORG.NS)"
+  },
+  "CHENG SHIN RUBBER INDUSTRIAL CO LTD": {
+    "period": "Q3 2025",
+    "revenue_usd": 23674526000,
+    "sga_usd": 2565285000,
+    "ebit_usd": 2063211000,
+    "source": "Yahoo Finance (2105.TW)"
+  },
+  "CTEK AB (PUBL)": {
+    "period": "Q4 2025",
+    "revenue_usd": 22217258,
+    "sga_usd": null,
+    "ebit_usd": 2616298,
+    "source": "Yahoo Finance (CTEK.ST)"
+  },
+  "CTR CO LTD": {
+    "period": "Q3 2025",
+    "revenue_usd": 238641549,
+    "sga_usd": 90538954,
+    "ebit_usd": -4949334,
+    "source": "Yahoo Finance (036570.KS)"
+  },
+  "ELRINGKLINGER AG": {
+    "period": "Q3 2025",
+    "revenue_usd": 453268748,
+    "sga_usd": 78034380,
+    "ebit_usd": 5150716,
+    "source": "Yahoo Finance (ZIL2.DE)"
+  },
+  "FUYAO GLASS INDUSTRY GROUP CO LTD": {
+    "period": "Q2 2025",
+    "revenue_usd": 1472036312,
+    "sga_usd": -23083476,
+    "ebit_usd": 358963173,
+    "source": "Yahoo Finance (3606.HK)"
+  },
+  "GUANGDONG HONGTU TECHNOLOGY HOLDING": {
+    "period": "Q2 2025",
+    "revenue_usd": 2171421916,
+    "sga_usd": 881170,
+    "ebit_usd": 77277073,
+    "source": "Yahoo Finance (002101.SZ)"
+  },
+  "HANKOOK & COMPANY CO LTD": {
+    "period": "Q3 2025",
+    "revenue_usd": 255000250,
+    "sga_usd": 8343330,
+    "ebit_usd": 90850820,
+    "source": "Yahoo Finance (000240.KS)"
+  },
+  "HANWHA CORP": {
+    "period": "Q3 2025",
+    "revenue_usd": 11789444653,
+    "sga_usd": 424972002,
+    "ebit_usd": 890975627,
+    "source": "Yahoo Finance (000880.KS)"
+  },
+  "HEXAGON COMPOSITES ASA": {
+    "period": "Q4 2025",
+    "revenue_usd": 828779000,
+    "sga_usd": null,
+    "ebit_usd": 47610000,
+    "source": "Yahoo Finance (HEX.OL)"
+  },
+  "HINDALCO INDUSTRIES LTD": {
+    "period": "Q4 2025",
+    "revenue_usd": 665210000000,
+    "sga_usd": null,
+    "ebit_usd": 57550000000,
+    "source": "Yahoo Finance (HINDALCO.NS)"
+  },
+  "HWASEUNG CORP CO LTD": {
+    "period": "Q3 2025",
+    "revenue_usd": 295298442,
+    "sga_usd": 17415508,
+    "ebit_usd": 14570209,
+    "source": "Yahoo Finance (013520.KS)"
+  },
+  "HYUNDAI WIA CORP": {
+    "period": "Q3 2025",
+    "revenue_usd": 1426320205,
+    "sga_usd": -15091901,
+    "ebit_usd": 34437161,
+    "source": "Yahoo Finance (011210.KS)"
+  },
+  "ILJIN GLOBAL CO LTD": {
+    "period": "Q4 2025",
+    "revenue_usd": 229559745,
+    "sga_usd": 15774576,
+    "ebit_usd": 5027207,
+    "source": "Yahoo Finance (014830.KS)"
+  },
+  "INFAC CORPORATION": {
+    "period": "Q3 2025",
+    "revenue_usd": 98471744,
+    "sga_usd": 5494941,
+    "ebit_usd": 4266298,
+    "source": "Yahoo Finance (023810.KS)"
+  },
+  "IOCHPE MAXION SA": {
+    "period": "Q4 2025",
+    "revenue_usd": 3519120000,
+    "sga_usd": 219360000,
+    "ebit_usd": 189888000,
+    "source": "Yahoo Finance (MYPK3.SA)"
+  },
+  "JINHAP CO LTD": {
+    "period": "Q3 2025",
+    "revenue_usd": 2747977,
+    "sga_usd": 398043,
+    "ebit_usd": -734191,
+    "source": "Yahoo Finance (051980.KS)"
+  },
+  "KENDRION NV": {
+    "period": "Q4 2025",
+    "revenue_usd": 70487103,
+    "sga_usd": null,
+    "ebit_usd": 5959885,
+    "source": "Yahoo Finance (KENDR.AS)"
+  },
+  "KONGSBERG AUTOMOTIVE ASA": {
+    "period": "Q4 2025",
+    "revenue_usd": 9593000000,
+    "sga_usd": null,
+    "ebit_usd": 1646000000,
+    "source": "Yahoo Finance (KOG.OL)"
+  },
+  "KYB CORP": {
+    "period": "Q3 2024",
+    "revenue_usd": 655365370,
+    "sga_usd": 94557974,
+    "ebit_usd": 9945236,
+    "source": "Yahoo Finance (7242.T)"
+  },
+  "LG CHEM LTD": {
+    "period": "Q4 2025",
+    "revenue_usd": 7421759380,
+    "sga_usd": 844151561,
+    "ebit_usd": -273922413,
+    "source": "Yahoo Finance (051910.KS)"
+  },
+  "LG ELECTRONICS INC": {
+    "period": "Q3 2025",
+    "revenue_usd": 14498521440,
+    "sga_usd": 2555458746,
+    "ebit_usd": 456633245,
+    "source": "Yahoo Finance (066570.KS)"
+  },
+  "LS CORP": {
+    "period": "Q3 2025",
+    "revenue_usd": 5350849489,
+    "sga_usd": 105533942,
+    "ebit_usd": 166833480,
+    "source": "Yahoo Finance (006260.KS)"
+  },
+  "NINGBO HUAXIANG ELECTRONIC CO LTD": {
+    "period": "Q2 2025",
+    "revenue_usd": 6618314528,
+    "sga_usd": -163563795,
+    "ebit_usd": 559577770,
+    "source": "Yahoo Finance (002048.SZ)"
+  },
+  "NINGBO JIFENG AUTO PARTS CO LTD": {
+    "period": "Q2 2025",
+    "revenue_usd": 5486016977,
+    "sga_usd": -252904721,
+    "ebit_usd": 105608363,
+    "source": "Yahoo Finance (603997.SS)"
+  },
+  "NINGBO JOYSON ELECTRONIC CORP": {
+    "period": "Q2 2025",
+    "revenue_usd": 15771105261,
+    "sga_usd": -315419028,
+    "ebit_usd": 981368318,
+    "source": "Yahoo Finance (600699.SS)"
+  },
+  "NIPPON SEIKI CO LTD": {
+    "period": "Q2 2024",
+    "revenue_usd": 352395563,
+    "sga_usd": null,
+    "ebit_usd": 145617277,
+    "source": "Yahoo Finance (6920.T)"
+  },
+  "NISSHINBO HOLDINGS INC": {
+    "period": "Q2 2024",
+    "revenue_usd": 683886729,
+    "sga_usd": null,
+    "ebit_usd": -8956345,
+    "source": "Yahoo Finance (3105.T)"
+  },
+  "NORMA GROUP SE": {
+    "period": "Q2 2025",
+    "revenue_usd": 332813739,
+    "sga_usd": null,
+    "ebit_usd": 21871632,
+    "source": "Yahoo Finance (NOEJ.DE)"
+  },
+  "PIRELLI & CO SPA": {
+    "period": "Q3 2025",
+    "revenue_usd": 1944548910,
+    "sga_usd": null,
+    "ebit_usd": 102448133,
+    "source": "Yahoo Finance (PIRC.MI)"
+  },
+  "PRYSMIAN SPA": {
+    "period": "Q4 2025",
+    "revenue_usd": 5691690290,
+    "sga_usd": null,
+    "ebit_usd": 406876773,
+    "source": "Yahoo Finance (PRY.MI)"
+  },
+  "RYOBI LTD": {
+    "period": "Q2 2024",
+    "revenue_usd": 467657652,
+    "sga_usd": null,
+    "ebit_usd": 15521828,
+    "source": "Yahoo Finance (5851.T)"
+  },
+  "SANDEN CORPORATION": {
+    "period": "Q2 2024",
+    "revenue_usd": 298695046,
+    "sga_usd": null,
+    "ebit_usd": -10295729,
+    "source": "Yahoo Finance (6444.T)"
+  },
+  "SANOH INDUSTRIAL CO LTD": {
+    "period": "Q3 2024",
+    "revenue_usd": 18826732,
+    "sga_usd": null,
+    "ebit_usd": 851172,
+    "source": "Yahoo Finance (7196.T)"
+  },
+  "SHANGHAI BAOLONG AUTOMOTIVE CORP": {
+    "period": "Q2 2025",
+    "revenue_usd": 2044793138,
+    "sga_usd": -57318825,
+    "ebit_usd": 98274012,
+    "source": "Yahoo Finance (603197.SS)"
+  },
+  "SK INNOVATION CO LTD": {
+    "period": "Q4 2025",
+    "revenue_usd": 12798955642,
+    "sga_usd": 415817550,
+    "ebit_usd": 223648732,
+    "source": "Yahoo Finance (096770.KS)"
+  },
+  "SL CORP": {
+    "period": "Q3 2025",
+    "revenue_usd": 863403352,
+    "sga_usd": 24119215,
+    "ebit_usd": 45266228,
+    "source": "Yahoo Finance (005850.KS)"
+  },
+  "SSAB AB": {
+    "period": "Q4 2025",
+    "revenue_usd": 2351201810,
+    "sga_usd": 170601995,
+    "ebit_usd": 77962134,
+    "source": "Yahoo Finance (SSAB-A.ST)"
+  },
+  "STABILUS SA": {
+    "period": "Q4 2025",
+    "revenue_usd": 333684799,
+    "sga_usd": 56472204,
+    "ebit_usd": 21469340,
+    "source": "Yahoo Finance (STM.DE)"
+  },
+  "SUNDRAM FASTENERS LTD": {
+    "period": "Q4 2025",
+    "revenue_usd": 15411100000,
+    "sga_usd": null,
+    "ebit_usd": 1827600000,
+    "source": "Yahoo Finance (SUNDRMFAST.NS)"
+  },
+  "SUNGWOO HITECH CO LTD": {
+    "period": "Q3 2025",
+    "revenue_usd": 785520133,
+    "sga_usd": 22520245,
+    "ebit_usd": 42014396,
+    "source": "Yahoo Finance (015750.KS)"
+  },
+  "SUPRAJIT ENGINEERING LTD": {
+    "period": "Q4 2025",
+    "revenue_usd": 9789570000,
+    "sga_usd": null,
+    "ebit_usd": 556040000,
+    "source": "Yahoo Finance (SUPRAJIT.NS)"
+  },
+  "TAEYANG METAL INDUSTRIAL CO LTD": {
+    "period": "Q3 2025",
+    "revenue_usd": 101909101,
+    "sga_usd": 7602021,
+    "ebit_usd": 1657880,
+    "source": "Yahoo Finance (004100.KS)"
+  },
+  "THK CO LTD": {
+    "period": "Q2 2024",
+    "revenue_usd": 592885806,
+    "sga_usd": 99007292,
+    "ebit_usd": 39144747,
+    "source": "Yahoo Finance (6481.T)"
+  },
+  "THULE GROUP AB": {
+    "period": "Q4 2025",
+    "revenue_usd": 195171235,
+    "sga_usd": 78919377,
+    "ebit_usd": 8827909,
+    "source": "Yahoo Finance (THULE.ST)"
+  },
+  "TOYO TIRE CORPORATION": {
+    "period": "Q2 2024",
+    "revenue_usd": 913485913,
+    "sga_usd": null,
+    "ebit_usd": 135166422,
+    "source": "Yahoo Finance (5105.T)"
+  },
+  "TRELLEBORG AB": {
+    "period": "Q4 2025",
+    "revenue_usd": 891299700,
+    "sga_usd": 162944050,
+    "ebit_usd": 148691764,
+    "source": "Yahoo Finance (TREL-B.ST)"
+  },
+  "TSUBAKI NAKASHIMA CO LTD": {
+    "period": "Q2 2024",
+    "revenue_usd": 127298666,
+    "sga_usd": 12825006,
+    "ebit_usd": 4149819,
+    "source": "Yahoo Finance (6464.T)"
+  },
+  "TUPY S/A": {
+    "period": "Q2 2025",
+    "revenue_usd": 2627369000,
+    "sga_usd": 250255000,
+    "ebit_usd": 86266000,
+    "source": "Yahoo Finance (TUPY3.SA)"
+  },
+  "WOORY INDUSTRIAL HOLDINGS CO LTD": {
+    "period": "Q3 2025",
+    "revenue_usd": 116012996,
+    "sga_usd": 4988210,
+    "ebit_usd": 6765659,
+    "source": "Yahoo Finance (072470.KS)"
+  },
+  "XIAMEN HONGFA ELECTROACOUSTIC CO": {
+    "period": "Q2 2025",
+    "revenue_usd": 5257252992,
+    "sga_usd": -59070114,
+    "ebit_usd": 383624725,
+    "source": "Yahoo Finance (601137.SS)"
+  },
+  "YOKOHAMA RUBBER CO LTD, THE": {
+    "period": "Q2 2024",
+    "revenue_usd": 1707897687,
+    "sga_usd": 413504723,
+    "ebit_usd": 184651290,
+    "source": "Yahoo Finance (5101.T)"
+  },
+  "ZHEJIANG SANHUA INTELLIGENT CONTROL": {
+    "period": "Q2 2025",
+    "revenue_usd": 8593336964,
+    "sga_usd": -234081110,
+    "ebit_usd": 1595070668,
+    "source": "Yahoo Finance (002050.SZ)"
+  },
+  "ZHEJIANG WANFENG AUTO WHEEL CO LTD": {
+    "period": "Q2 2025",
+    "revenue_usd": 3927246135,
+    "sga_usd": -62339367,
+    "ebit_usd": 386813261,
+    "source": "Yahoo Finance (002085.SZ)"
+  },
+  "ZHEJIANG YINLUN MACHINERY CO LTD": {
+    "period": "Q2 2025",
+    "revenue_usd": 3751366118,
+    "sga_usd": -32772239,
+    "ebit_usd": 317930743,
+    "source": "Yahoo Finance (002126.SZ)"
   },
   "LEAR CORP": {
     "period": "Q3 2025",
