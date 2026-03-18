@@ -1,0 +1,16 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+.Python
+.venv/
+venv/
+.env
+.env.local
+
+# IDE / Cursor
+.cursor/
+
+# Optional: large generated outputs (uncomment to keep out of git)
+# *.xlsx
+# latest_quarter_financials.json

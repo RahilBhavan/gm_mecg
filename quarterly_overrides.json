@@ -1,0 +1,10 @@
+{
+  "_comment": "Manual or scraped quarterly P&L for names where SEC/Yahoo have no usable data (Japan, HK, Mexico, Valeo FR.PA empty, etc.). Same schema as latest_quarter_financials.json. Keys must match build_auto_excel.py INCLUDE_DETAILS. Merged last in fetch_all_quarterly.py so SEC and Yahoo take precedence.",
+  "_schema": {
+    "period": "e.g. Q3 2025",
+    "revenue_usd": 1234567890,
+    "sga_usd": 123456789,
+    "ebit_usd": 123456789,
+    "source": "e.g. Valeo H1 2025 earnings release"
+  }
+}

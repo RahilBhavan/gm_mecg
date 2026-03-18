@@ -1,0 +1,4 @@
+{
+  "_comment": "Optional: company name (exact match to build_auto_excel.py) -> CIK string (10-digit zero-padded). Use when SEC ticker in ticker_source_map does not match SEC company list.",
+  "_example": "MAGNA INTERNATIONAL INC": "0001234567"
+}

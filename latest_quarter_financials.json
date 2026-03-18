@@ -1,0 +1,268 @@
+{
+  "LINAMAR CORP": {
+    "period": "Q4 2025",
+    "revenue_usd": 1831781490,
+    "sga_usd": 109108393,
+    "ebit_usd": 145255736,
+    "source": "Yahoo Finance (LNR.TO)"
+  },
+  "MARTINREA INTERNATIONAL INC": {
+    "period": "Q3 2025",
+    "revenue_usd": 867216546,
+    "sga_usd": 65240002,
+    "ebit_usd": 47462369,
+    "source": "Yahoo Finance (MRE.TO)"
+  },
+  "EXCO TECHNOLOGIES LTD": {
+    "period": "Q4 2025",
+    "revenue_usd": 108891370,
+    "sga_usd": 10160000,
+    "ebit_usd": 5883638,
+    "source": "Yahoo Finance (XTC.TO)"
+  },
+  "AIRBOSS OF AMERICA CORP": {
+    "period": "Q3 2025",
+    "revenue_usd": 73132190,
+    "sga_usd": 9388769,
+    "ebit_usd": -182794,
+    "source": "Yahoo Finance (BOS.TO)"
+  },
+  "CONTINENTAL AKTIENGESELLSCHAFT": {
+    "period": "Q4 2025",
+    "revenue_usd": 5687285299,
+    "sga_usd": 941580769,
+    "ebit_usd": 335624289,
+    "source": "Yahoo Finance (CON.DE)"
+  },
+  "THYSSENKRUPP AG": {
+    "period": "Q4 2025",
+    "revenue_usd": 8230240660,
+    "sga_usd": 1209622009,
+    "ebit_usd": -505154646,
+    "source": "Yahoo Finance (TKA.DE)"
+  },
+  "AB SKF": {
+    "period": "Q4 2025",
+    "revenue_usd": 2332192702,
+    "sga_usd": 334929581,
+    "ebit_usd": 165925495,
+    "source": "Yahoo Finance (SKF-B.ST)"
+  },
+  "HYUNDAI MOBIS CO LTD": {
+    "period": "Q3 2025",
+    "revenue_usd": 9957823432,
+    "sga_usd": 309479582,
+    "ebit_usd": 516904924,
+    "source": "Yahoo Finance (012330.KS)"
+  },
+  "POSCO HOLDINGS INC": {
+    "period": "Q3 2025",
+    "revenue_usd": 11434484838,
+    "sga_usd": 392566707,
+    "ebit_usd": 448569780,
+    "source": "Yahoo Finance (005490.KS)"
+  },
+  "LEAR CORP": {
+    "period": "Q3 2025",
+    "revenue_usd": 17591400000,
+    "sga_usd": 535900000,
+    "ebit_usd": 677800000,
+    "source": "SEC 10-Q"
+  },
+  "AUTOLIV INC": {
+    "period": "Q3 2025",
+    "revenue_usd": 7774000000,
+    "sga_usd": 399000000,
+    "ebit_usd": 626000000,
+    "source": "SEC 10-Q"
+  },
+  "GOODYEAR TIRE & RUBBER CO, THE": {
+    "period": "Q3 2025",
+    "revenue_usd": 13931000000,
+    "sga_usd": 2090000000,
+    "ebit_usd": null,
+    "source": "SEC 10-Q"
+  },
+  "CLEVELAND CLIFFS INC": {
+    "period": "Q3 2025",
+    "revenue_usd": 14860000000,
+    "sga_usd": 347000000,
+    "ebit_usd": -298000000,
+    "source": "SEC 10-Q"
+  },
+  "TE CONNECTIVITY LTD": {
+    "period": "Q1 2026",
+    "revenue_usd": 3836000000,
+    "sga_usd": 427000000,
+    "ebit_usd": 690000000,
+    "source": "SEC 10-Q"
+  },
+  "DANA INC": {
+    "period": "Q3 2025",
+    "revenue_usd": 5960000000,
+    "sga_usd": 328000000,
+    "ebit_usd": -59000000,
+    "source": "SEC 10-Q"
+  },
+  "EATON CORPORATION PUBLIC LTD CO": {
+    "period": "Q3 2025",
+    "revenue_usd": 18638000000,
+    "sga_usd": 3074000000,
+    "ebit_usd": null,
+    "source": "SEC 10-Q"
+  },
+  "ALLISON TRANSMISSION HOLDINGS INC": {
+    "period": "Q3 2025",
+    "revenue_usd": 2429000000,
+    "sga_usd": 253000000,
+    "ebit_usd": 757000000,
+    "source": "SEC 10-Q"
+  },
+  "PARKER-HANNIFIN CORPORATION": {
+    "period": "Q2 2026",
+    "revenue_usd": 9647000000,
+    "sga_usd": 1631000000,
+    "ebit_usd": 2050000000,
+    "source": "SEC 10-Q"
+  },
+  "GARRETT MOTION INC": {
+    "period": "Q3 2025",
+    "revenue_usd": 2631000000,
+    "sga_usd": 178000000,
+    "ebit_usd": null,
+    "source": "SEC 10-Q"
+  },
+  "SENSATA TECHNOLOGIES HOLDING PLC": {
+    "period": "Q3 2025",
+    "revenue_usd": 3025074000,
+    "sga_usd": 283772000,
+    "ebit_usd": 75512000,
+    "source": "SEC 10-Q"
+  },
+  "VISTEON CORP": {
+    "period": "Q3 2025",
+    "revenue_usd": 2927000000,
+    "sga_usd": 152000000,
+    "ebit_usd": null,
+    "source": "SEC 10-Q"
+  },
+  "GENTEX CORP": {
+    "period": "Q3 2025",
+    "revenue_usd": 1771676766,
+    "sga_usd": 90494117,
+    "ebit_usd": 369958486,
+    "source": "SEC 10-Q"
+  },
+  "PARK-OHIO HOLDINGS CORP": {
+    "period": "Q3 2025",
+    "revenue_usd": 1267800000,
+    "sga_usd": 142300000,
+    "ebit_usd": 72200000,
+    "source": "SEC 10-Q"
+  },
+  "WORTHINGTON INDUSTRIES INC": {
+    "period": "Q2 2026",
+    "revenue_usd": 531354000,
+    "sga_usd": 133954000,
+    "ebit_usd": -1178000,
+    "source": "SEC 10-Q"
+  },
+  "STRATTEC SECURITY CORPORATION": {
+    "period": "Q2 2026",
+    "revenue_usd": 268971000,
+    "sga_usd": null,
+    "ebit_usd": 7197000,
+    "source": "SEC 10-Q"
+  },
+  "MOTORCAR PARTS OF AMERICA INC": {
+    "period": "Q3 2026",
+    "revenue_usd": 564249000,
+    "sga_usd": null,
+    "ebit_usd": 23645000,
+    "source": "SEC 10-Q"
+  },
+  "WESTPORT FUEL SYSTEMS INC": {
+    "period": "Q3 2025",
+    "revenue_usd": 33414000,
+    "sga_usd": null,
+    "ebit_usd": -25383000,
+    "source": "SEC 10-Q"
+  },
+  "DORMAN PRODUCTS INC": {
+    "period": "Q3 2025",
+    "revenue_usd": 1475425000,
+    "sga_usd": 378489000,
+    "ebit_usd": 206161000,
+    "source": "SEC 10-Q"
+  },
+  "TRIMAS CORP": {
+    "period": "Q3 2025",
+    "revenue_usd": 696960000,
+    "sga_usd": 115380000,
+    "ebit_usd": 38570000,
+    "source": "SEC 10-Q"
+  },
+  "HOLLEY INC": {
+    "period": "Q3 2025",
+    "revenue_usd": 462170000,
+    "sga_usd": 97675000,
+    "ebit_usd": 43649000,
+    "source": "SEC 10-Q"
+  },
+  "LCI INDUSTRIES": {
+    "period": "Q3 2025",
+    "revenue_usd": 2938070000,
+    "sga_usd": 508206000,
+    "ebit_usd": 202103000,
+    "source": "SEC 10-Q"
+  },
+  "CTS CORP": {
+    "period": "Q3 2025",
+    "revenue_usd": 388296000,
+    "sga_usd": 66100000,
+    "ebit_usd": 53176000,
+    "source": "SEC 10-Q"
+  },
+  "CONSTELLIUM SE": {
+    "period": "Q3 2025",
+    "revenue_usd": 5614000000,
+    "sga_usd": 221000000,
+    "ebit_usd": null,
+    "source": "SEC 10-Q"
+  },
+  "ITT INC": {
+    "period": "Q3 2025",
+    "revenue_usd": 2701700000,
+    "sga_usd": null,
+    "ebit_usd": 518200000,
+    "source": "SEC 10-Q"
+  },
+  "DONALDSON COMPANY INC": {
+    "period": "Q2 2026",
+    "revenue_usd": 1770100000,
+    "sga_usd": 325300000,
+    "ebit_usd": 256300000,
+    "source": "SEC 10-Q"
+  },
+  "CUMMINS INC": {
+    "period": "Q3 2025",
+    "revenue_usd": 25655000000,
+    "sga_usd": 2474000000,
+    "ebit_usd": 3018000000,
+    "source": "SEC 10-Q"
+  },
+  "LKQ CORP": {
+    "period": "Q3 2025",
+    "revenue_usd": 10597000000,
+    "sga_usd": 2873000000,
+    "ebit_usd": 886000000,
+    "source": "SEC 10-Q"
+  },
+  "JABIL CIRCUIT CO": {
+    "period": "Q1 2026",
+    "revenue_usd": 6994000000,
+    "sga_usd": 305000000,
+    "ebit_usd": 197000000,
+    "source": "SEC 10-Q"
+  }
+}
