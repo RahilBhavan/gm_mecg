@@ -1,0 +1,102 @@
+@import 'tailwindcss';
+@import '@fontsource-variable/inter/wght.css';
+
+@theme {
+  --font-sans: 'Inter Variable', system-ui, Arial, sans-serif;
+  --color-gm-blue: #0057a8;
+  --color-gm-dark: #1a1a2e;
+  --color-accent-teal: #00b4d8;
+  --color-above-bench: #ef4444;
+  --color-below-bench: #22c55e;
+  --color-surface: #f8fafc;
+  --color-border-theme: #c7d9f0;
+}
+
+/* PRD design tokens — light (default) */
+:root {
+  --gm-blue: #0057a8;
+  --gm-dark: #1a1a2e;
+  --accent-teal: #00b4d8;
+  --above-bench: #ef4444;
+  --below-bench: #22c55e;
+  --surface: #f8fafc;
+  --border: #c7d9f0;
+  --text-primary: #1a1a2e;
+  --text-muted: #64748b;
+}
+
+.dark {
+  --gm-dark: #e8f0fe;
+  --surface: #0f1629;
+  --text-primary: #e8f0fe;
+  --text-muted: #94a3b8;
+}
+
+@keyframes zone-pulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.04);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.zone-pulse {
+  animation: zone-pulse 400ms ease-in-out 1;
+  transform-origin: center;
+}
+
+/* HUD zone overlay — glow reads on dark vehicle panel */
+.tahoe-zone-hud {
+  filter: drop-shadow(0 0 3px rgba(45, 212, 191, 0.35));
+}
+
+.tahoe-zone-hud--hot {
+  filter: drop-shadow(0 0 8px rgba(56, 189, 248, 0.55))
+    drop-shadow(0 0 14px rgba(0, 180, 216, 0.35));
+}
+
+/* Zone label + badge group — opacity transition when off side profile */
+.zone-label-group {
+  transition: opacity 0.3s ease;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-sans);
+  font-size: 14px;
+  line-height: 1.45;
+  background: var(--surface);
+  color: var(--text-primary);
+  -webkit-font-smoothing: antialiased;
+}
+
+#root {
+  min-height: 100svh;
+}
+
+/* Print / Save as PDF — hide interactive chrome, flatten layout */
+@media print {
+  header,
+  .no-print {
+    display: none !important;
+  }
+
+  body {
+    background: white;
+    color: black;
+    font-size: 12px;
+  }
+
+  .flex {
+    display: block !important;
+  }
+
+  aside {
+    width: 100% !important;
+    border: none !important;
+  }
+}
