@@ -1,0 +1,51 @@
+name: CI
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+    branches: [main, master]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Run tests
+        run: python -m pytest tests/ -v
+
+      - name: Validate quarterly overrides (if present)
+        run: python validate_quarterly_overrides.py
+        continue-on-error: false
+
+      - name: Validate latest_quarter_financials (if present)
+        run: python validate_latest_quarter_financials.py
+        continue-on-error: false
+
+      - name: Ticker map coverage report
+        run: python validate_ticker_map_coverage.py
+
+      - name: Build Excel (no fetch)
+        run: python build_auto_excel.py
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+
+      - name: Install & test GM Supplier Dashboard
+        working-directory: gm-supplier-dashboard
+        run: |
+          bun install --frozen-lockfile
+          bun run model:validate
+          bun run test
+          bun run build

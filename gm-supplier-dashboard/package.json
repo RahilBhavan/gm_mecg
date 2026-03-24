@@ -6,6 +6,8 @@
   "scripts": {
     "dev": "vite",
     "data:build": "bun run scripts/parseSuppliers.ts",
+    "model:convert": "bun run scripts/convert-model.ts",
+    "model:validate": "bun run scripts/validate-model-profile.ts",
     "build": "bun run data:build && tsc -b && vite build",
     "build:vercel": "tsc -b && vite build",
     "lint": "eslint .",

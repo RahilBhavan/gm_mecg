@@ -13,6 +13,8 @@ React + TypeScript + Vite SPA for PPCO-style supplier benchmarking. Consumes `au
 |--------|-------------|
 | `bun install` | Install dependencies |
 | `bun run data:build` | Parse `../auto_suppliers.xlsx` → `src/generated/dashboard-data.json` |
+| `bun run model:convert` | Validate USDZ source + expected GLB target presence |
+| `bun run model:validate` | Validate active 3D model profile contracts |
 | `bun run dev` | Development server (run `data:build` first if JSON is missing) |
 | `bun run build` | `data:build` + TypeScript + production bundle in `dist/` |
 | `bun run preview` | Preview production build |
@@ -36,9 +38,23 @@ The nav uses a **placeholder** “GM” mark. Replace with an approved General M
 
 ## 3D vehicle mesh
 
-The hotspot map stacks **SVG zones** over a **WebGL** view of `public/models/Car_tahoe.3ds` (Three.js `TDSLoader` via React Three Fiber). Place or symlink the Archibase `Car_tahoe.3DS` file there as **`Car_tahoe.3ds`** (lowercase extension is fine on macOS/Linux; adjust `MODEL_URL` in `TahoeThreeCanvas.tsx` if needed).
+The hotspot map uses a **GLB runtime model** with a profile-driven zone manifest:
 
-If WebGL or the 3DS load fails, the map falls back to the 2D silhouette in `tahoeZones.ts`. Tune **camera `zoom`**, **mesh `rotation`**, and **`Bounds` margin** in `src/components/TahoeThreeCanvas.tsx` so the side profile lines up with the SVG polygons in `tahoeZones.ts`.
+- USDZ source asset: `2010 Chevrolet Camaro SS.usdz`
+- Runtime target: `public/models/camaro-ss.glb`
+- Active profile: `src/models/camaro-ss/profile.ts`
+
+Run:
+
+```bash
+bun run model:convert
+bun run model:validate
+```
+
+`model:convert` validates source/output paths and documents the required offline conversion step.
+`model:validate` enforces profile contracts (zone polygons, anchors, match order, and mesh-path map consistency).
+
+If WebGL or model loading fails, the map falls back to profile-provided 2D silhouette data.
 
 ## Structure
 

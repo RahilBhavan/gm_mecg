@@ -2,18 +2,23 @@ import { useCallback, useEffect, useMemo, useRef, useState, type ReactElement } 
 
 import { useDashboard } from '@/context/DashboardContext'
 import { ZONE_LABELS } from '@/data/zones'
+import { ACTIVE_VEHICLE_PROFILE } from '@/models'
 import type { ZoneId } from '@/types/dashboard'
 
 import { TahoeThreeCanvas } from '@/components/TahoeThreeCanvas'
-import { TAHOE_SILHOUETTE_PATH, TAHOE_VIEWBOX } from '@/components/tahoeZones'
 import { ZoneTooltip } from '@/components/ZoneTooltip'
 
 
 function SilhouetteFallback(): ReactElement {
   return (
-    <svg viewBox={TAHOE_VIEWBOX} className="h-full w-full opacity-70" role="img" aria-hidden>
+    <svg
+      viewBox={ACTIVE_VEHICLE_PROFILE.fallback2d.viewBox}
+      className="h-full w-full opacity-70"
+      role="img"
+      aria-hidden
+    >
       <path
-        d={TAHOE_SILHOUETTE_PATH}
+        d={ACTIVE_VEHICLE_PROFILE.fallback2d.silhouettePath}
         fill="currentColor"
         className="text-slate-400/60 dark:text-slate-600/60"
       />

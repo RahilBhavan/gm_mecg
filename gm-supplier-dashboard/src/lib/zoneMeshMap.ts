@@ -1,31 +1,7 @@
 import * as THREE from 'three'
 
-import { ZONE_POLYGONS } from '@/components/tahoeZones'
+import type { VehicleModelProfile } from '@/models/vehicle-profile'
 import type { ZoneId } from '@/types/dashboard'
-
-const VIEWBOX_W = 100
-const VIEWBOX_H = 55
-
-/**
- * Test smaller / specific polygons before the large Body (Z02) catch-all so mesh centers
- * in overlapping regions map to the intended zone.
- */
-export const ZONE_MATCH_ORDER: ZoneId[] = [
-  'Z01',
-  'Z13',
-  'Z03',
-  'Z11',
-  'Z14',
-  'Z04',
-  'Z05',
-  'Z06',
-  'Z07',
-  'Z08',
-  'Z09',
-  'Z10',
-  'Z12',
-  'Z02',
-]
 
 /** 2D ray-casting point-in-polygon test for SVG polygon point strings ("x,y x,y …"). */
 export function pointInPolygon(px: number, py: number, polyStr: string): boolean {
@@ -47,12 +23,17 @@ export function pointInPolygon(px: number, py: number, polyStr: string): boolean
 export type ZoneMeshMapping = {
   /** mesh.uuid -> ZoneId */
   meshMap: Map<string, ZoneId>
+  /** mesh.path -> ZoneId (stable mapping key) */
+  meshPathMap: Map<string, ZoneId>
   /** ZoneId -> average 3D centroid of all meshes in that zone */
   zoneCentroids: Map<ZoneId, THREE.Vector3>
+  diagnostics: {
+    totalMeshes: number
+    deterministicMatches: number
+    projectionMatches: number
+    unmatchedMeshes: string[]
+  }
 }
-
-const SIDE_VIEW_DIR = new THREE.Vector3(0, 0.18, 1).normalize()
-const SIDE_VIEW_DIST_SCALE = 2.2
 
 /**
  * Camera position + look-at target for a side profile aligned with SVG zone polygons.
@@ -61,24 +42,33 @@ const SIDE_VIEW_DIST_SCALE = 2.2
 export function getSideProfilePlacementFromBox(
   center: THREE.Vector3,
   size: THREE.Vector3,
+  sideViewDir: readonly [number, number, number],
+  sideViewDistScale: number,
 ): { position: THREE.Vector3; target: THREE.Vector3 } {
+  const dir = new THREE.Vector3(sideViewDir[0], sideViewDir[1], sideViewDir[2]).normalize()
   const target = center.clone()
   const extent = Math.max(size.x, size.y, size.z, 1e-6)
-  const dist = extent * SIDE_VIEW_DIST_SCALE
-  const position = target.clone().addScaledVector(SIDE_VIEW_DIR, dist)
+  const dist = extent * sideViewDistScale
+  const position = target.clone().addScaledVector(dir, dist)
   return { position, target }
 }
 
 function createSideProjectionCamera(
   root: THREE.Object3D,
   worldCam: THREE.OrthographicCamera,
+  profile: VehicleModelProfile,
 ): THREE.OrthographicCamera {
   const box = new THREE.Box3().setFromObject(root)
   const center = new THREE.Vector3()
   const size = new THREE.Vector3()
   box.getCenter(center)
   box.getSize(size)
-  const { position, target } = getSideProfilePlacementFromBox(center, size)
+  const { position, target } = getSideProfilePlacementFromBox(
+    center,
+    size,
+    profile.camera.sideViewDir,
+    profile.camera.sideViewDistScale,
+  )
 
   const ref = worldCam.clone()
   ref.position.copy(position)
@@ -97,24 +87,68 @@ function createSideProjectionCamera(
  * orthographic camera (same zoom/frustum as `worldCam`), so SVG polygons stay valid even
  * if the live camera is still orbiting. Call after Bounds zoom has settled.
  */
+function getObjectPath(root: THREE.Object3D, object: THREE.Object3D): string {
+  const segments: string[] = []
+  let cursor: THREE.Object3D | null = object
+  while (cursor && cursor !== root) {
+    const name = cursor.name?.trim() || cursor.type
+    segments.push(name)
+    cursor = cursor.parent
+  }
+  return segments.reverse().join('/')
+}
+
 export function buildZoneMeshMap(
   root: THREE.Object3D,
   worldCam: THREE.Camera,
+  profile: VehicleModelProfile,
 ): ZoneMeshMapping {
   const meshMap = new Map<string, ZoneId>()
+  const meshPathMap = new Map<string, ZoneId>()
   const zoneCentroids = new Map<ZoneId, THREE.Vector3>()
   const zonePoints = new Map<ZoneId, THREE.Vector3[]>()
 
+  const deterministicPathMap = new Map<string, ZoneId>()
+  for (const [zoneId, paths] of Object.entries(profile.zones.meshPathMap)) {
+    for (const path of paths ?? []) deterministicPathMap.set(path, zoneId as ZoneId)
+  }
+
   const projectCam =
     worldCam instanceof THREE.OrthographicCamera
-      ? createSideProjectionCamera(root, worldCam)
+      ? createSideProjectionCamera(root, worldCam, profile)
       : worldCam
+
+  const [viewW, viewH] = profile.fallback2d.viewBox
+    .split(' ')
+    .slice(-2)
+    .map((v) => Number(v))
+  const diagnostics = {
+    totalMeshes: 0,
+    deterministicMatches: 0,
+    projectionMatches: 0,
+    unmatchedMeshes: [] as string[],
+  }
 
   const bbox = new THREE.Box3()
   const center = new THREE.Vector3()
 
   root.traverse((child) => {
     if (!(child instanceof THREE.Mesh)) return
+    diagnostics.totalMeshes += 1
+    const meshPath = getObjectPath(root, child)
+    const deterministicZone = deterministicPathMap.get(meshPath)
+    if (deterministicZone) {
+      bbox.setFromObject(child, true)
+      if (!bbox.isEmpty()) {
+        bbox.getCenter(center)
+        meshMap.set(child.uuid, deterministicZone)
+        meshPathMap.set(meshPath, deterministicZone)
+        if (!zonePoints.has(deterministicZone)) zonePoints.set(deterministicZone, [])
+        zonePoints.get(deterministicZone)!.push(center.clone())
+        diagnostics.deterministicMatches += 1
+      }
+      return
+    }
     try {
       bbox.setFromObject(child, true)
       if (bbox.isEmpty()) return
@@ -124,20 +158,28 @@ export function buildZoneMeshMap(
       const ndc = center.clone().project(projectCam)
 
       // Map NDC to viewBox coordinates
-      const vx = (ndc.x + 1) / 2 * VIEWBOX_W
-      const vy = (1 - ndc.y) / 2 * VIEWBOX_H
+      const vx = ((ndc.x + 1) / 2) * viewW
+      const vy = ((1 - ndc.y) / 2) * viewH
 
-      for (const zoneId of ZONE_MATCH_ORDER) {
-        const polyStr = ZONE_POLYGONS[zoneId]
+      for (const zoneId of profile.zones.matchOrder) {
+        const polyStr = profile.zones.polygons[zoneId]
         if (pointInPolygon(vx, vy, polyStr)) {
           const zid = zoneId
           meshMap.set(child.uuid, zid)
+          meshPathMap.set(meshPath, zid)
           
           // Collect points to calculate average centroid later
           if (!zonePoints.has(zid)) zonePoints.set(zid, [])
           zonePoints.get(zid)!.push(center.clone())
+          diagnostics.projectionMatches += 1
           break
         }
+      }
+      if (!meshMap.has(child.uuid)) {
+        const isIgnored = profile.zones.ignoredMeshPathPatterns.some((pattern) =>
+          meshPath.toLowerCase().includes(pattern.toLowerCase()),
+        )
+        if (!isIgnored) diagnostics.unmatchedMeshes.push(meshPath)
       }
     } catch {
       // Skip any malformed mesh entries
@@ -152,5 +194,5 @@ export function buildZoneMeshMap(
     zoneCentroids.set(zoneId, avg)
   }
 
-  return { meshMap, zoneCentroids }
+  return { meshMap, meshPathMap, zoneCentroids, diagnostics }
 }

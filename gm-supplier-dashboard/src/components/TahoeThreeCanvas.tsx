@@ -16,21 +16,20 @@ import { Canvas, useFrame, useLoader, useThree } from '@react-three/fiber'
 import type { ThreeEvent } from '@react-three/fiber'
 import { Bounds, Environment, Html, OrbitControls, OrthographicCamera } from '@react-three/drei'
 import * as THREE from 'three'
-import { TDSLoader } from 'three/addons/loaders/TDSLoader.js'
+import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js'
 
 import { buildZoneMeshMap, getSideProfilePlacementFromBox } from '@/lib/zoneMeshMap'
 import type { ZoneMeshMapping } from '@/lib/zoneMeshMap'
 import type { ZoneId } from '@/types/dashboard'
-import { ZONE_LABEL_OFFSETS, ZONE_SHORT_LABELS } from '@/data/zones'
-
-const MODEL_URL = '/models/Car_tahoe.3ds'
+import { ZONE_SHORT_LABELS } from '@/data/zones'
+import { ACTIVE_VEHICLE_PROFILE } from '@/models'
 
 /** Orbit polar angle (phi from +Y): narrow band around side view after snap (~80°). */
-const ORBIT_MIN_POLAR = Math.PI * 0.4
-const ORBIT_MAX_POLAR = Math.PI * 0.58
+const ORBIT_MIN_POLAR = ACTIVE_VEHICLE_PROFILE.camera.orbitMinPolar
+const ORBIT_MAX_POLAR = ACTIVE_VEHICLE_PROFILE.camera.orbitMaxPolar
 
 /** Frames orthographic zoom must stay unchanged before classifying meshes (post-Bounds fit). */
-const STABLE_ZOOM_FRAMES = 3
+const STABLE_ZOOM_FRAMES = ACTIVE_VEHICLE_PROFILE.camera.stableZoomFrames
 const BODY_COLOR = '#64748b'
 const BODY_METALNESS = 0.9
 const BODY_ROUGHNESS = 0.1
@@ -103,8 +102,12 @@ function SideViewCameraSnap({ vehicleRoot, orbitRef, onSnapped }: SideViewCamera
       const size = new THREE.Vector3()
       box.getCenter(center)
       box.getSize(size)
-      const { position, target } = getSideProfilePlacementFromBox(center, size)
-
+      const { position, target } = getSideProfilePlacementFromBox(
+        center,
+        size,
+        ACTIVE_VEHICLE_PROFILE.camera.sideViewDir,
+        ACTIVE_VEHICLE_PROFILE.camera.sideViewDistScale,
+      )
       const cam = camera as THREE.OrthographicCamera
       cam.position.copy(position)
       cam.up.set(0, 1, 0)
@@ -120,7 +123,7 @@ function SideViewCameraSnap({ vehicleRoot, orbitRef, onSnapped }: SideViewCamera
       }
       onSnapped()
       invalidate()
-    }, 1280)
+    }, ACTIVE_VEHICLE_PROFILE.camera.fitDelayMs)
     return () => window.clearTimeout(id)
   }, [vehicleRoot, camera, orbitRef, onSnapped, invalidate])
 
@@ -156,7 +159,7 @@ function TahoeMesh({
   onZoneLeave,
   onZoneClick,
 }: TahoeMeshProps): ReactNode {
-  const loaded = useLoader(TDSLoader, MODEL_URL)
+  const loaded = useLoader(GLTFLoader, ACTIVE_VEHICLE_PROFILE.modelUrl)
   const { camera, invalidate } = useThree()
   const [mapping, setMapping] = useState<ZoneMeshMapping | null>(null)
   const sceneRef = useRef<THREE.Object3D | null>(null)
@@ -175,7 +178,7 @@ function TahoeMesh({
   }, [activeZoneId, hoveredZoneId, pulseZones])
 
   const scene = useMemo(() => {
-    const root = loaded.clone(true)
+    const root = loaded.scene.clone(true)
     root.traverse((child) => {
       if (child instanceof THREE.Mesh) {
         const prev = child.material
@@ -243,7 +246,10 @@ function TahoeMesh({
       return
     }
 
-    const result = buildZoneMeshMap(sceneRef.current, camera)
+    const result = buildZoneMeshMap(sceneRef.current, camera, ACTIVE_VEHICLE_PROFILE)
+    if (result.diagnostics.unmatchedMeshes.length > 0) {
+      console.warn('[TahoeThreeCanvas] Unmapped meshes', result.diagnostics.unmatchedMeshes)
+    }
     setMapping(result)
     mappingBuiltRef.current = true
     applyHighlights(
@@ -289,9 +295,9 @@ function TahoeMesh({
           const isActive = activeZoneId === zid
           const isHovered = hoveredZoneId === zid
           const isPulse = pulseZones?.has(zid)
-          const off = ZONE_LABEL_OFFSETS[zid]
-          const labelPos: [number, number, number] = off
-            ? [pos.x + off[0], pos.y + off[1], pos.z + off[2]]
+          const anchor = ACTIVE_VEHICLE_PROFILE.zones.labelAnchors[zid]
+          const labelPos: [number, number, number] = anchor
+            ? [anchor[0], anchor[1], anchor[2]]
             : [pos.x, pos.y, pos.z]
 
           return (
@@ -401,8 +407,8 @@ function TahoeScene({ cameraResetRef, ...meshProps }: SceneProps): ReactNode {
       />
       
       <Bounds fit clip observe margin={1.2}>
-        {/* Align .3ds axes to side-profile projection vs ZONE_POLYGONS; tune with README if needed. */}
-        <group rotation={[0, -Math.PI / 2, -Math.PI / 2]}>
+        {/* Align model axes to profile side-view projection; tune via profile config. */}
+        <group rotation={ACTIVE_VEHICLE_PROFILE.rootRotation}>
           <TahoeMesh
             orbitRef={orbitRef}
             onSideViewSnapped={onSideViewSnapped}
@@ -486,7 +492,13 @@ export function TahoeThreeCanvas({
         orthographic
         frameloop="demand"
       >
-        <OrthographicCamera makeDefault position={[0, 2.35, 13.5]} zoom={52} near={0.1} far={500} />
+        <OrthographicCamera
+          makeDefault
+          position={ACTIVE_VEHICLE_PROFILE.camera.position}
+          zoom={ACTIVE_VEHICLE_PROFILE.camera.zoom}
+          near={ACTIVE_VEHICLE_PROFILE.camera.near}
+          far={ACTIVE_VEHICLE_PROFILE.camera.far}
+        />
         <Suspense fallback={<LoadingIndicator />}>
           <TahoeScene cameraResetRef={cameraResetRef} {...sceneProps} />
         </Suspense>
