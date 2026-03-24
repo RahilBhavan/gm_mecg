@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState, type ReactElement } from 'react'
 
 import { useDashboard } from '@/context/DashboardContext'
-import { ZONE_LABELS } from '@/data/zones'
+import { ZONE_IDS, ZONE_LABELS, ZONE_SHORT_LABELS } from '@/data/zones'
 import { ACTIVE_VEHICLE_PROFILE } from '@/models'
 import type { ZoneId } from '@/types/dashboard'
 
@@ -24,6 +24,20 @@ function SilhouetteFallback(): ReactElement {
       />
     </svg>
   )
+}
+
+function polygonCentroid(poly: string): { x: number; y: number } {
+  const points = poly
+    .trim()
+    .split(' ')
+    .map((pair) => {
+      const [x, y] = pair.split(',').map(Number)
+      return { x, y }
+    })
+  return {
+    x: points.reduce((acc, p) => acc + p.x, 0) / points.length,
+    y: points.reduce((acc, p) => acc + p.y, 0) / points.length,
+  }
 }
 
 /**
@@ -94,6 +108,27 @@ export function TahoeMap(): ReactElement {
     [selectedSupplier],
   )
 
+  const [viewBoxW, viewBoxH] = useMemo(() => {
+    const dims = ACTIVE_VEHICLE_PROFILE.fallback2d.viewBox
+      .split(' ')
+      .slice(-2)
+      .map((v) => Number(v))
+    return [dims[0] ?? 100, dims[1] ?? 55]
+  }, [])
+
+  const fallbackLabelPositions = useMemo(() => {
+    const out = new Map<ZoneId, { leftPct: number; topPct: number }>()
+    for (const zoneId of ZONE_IDS) {
+      const poly = ACTIVE_VEHICLE_PROFILE.zones.polygons[zoneId]
+      const c = polygonCentroid(poly)
+      out.set(zoneId, {
+        leftPct: (c.x / viewBoxW) * 100,
+        topPct: (c.y / viewBoxH) * 100,
+      })
+    }
+    return out
+  }, [viewBoxH, viewBoxW])
+
   return (
     <div className="relative w-full">
       <div
@@ -119,6 +154,49 @@ export function TahoeMap(): ReactElement {
             onZoneClick={onZoneClick}
             cameraResetRef={cameraResetRef}
           />
+        </div>
+
+        {/* Always-on 2D label overlay so zones remain visible if 3D loading/mapping fails. */}
+        <div className="pointer-events-none absolute inset-0 z-20">
+          {ZONE_IDS.map((zoneId) => {
+            const pos = fallbackLabelPositions.get(zoneId)
+            if (!pos) return null
+            const isActive = state.activeZoneId === zoneId
+            const isHovered = hoveredZoneId === zoneId
+            const isPulse = pulseZones.has(zoneId)
+            const count = zoneCounts.get(zoneId) ?? 0
+            return (
+              <button
+                key={zoneId}
+                type="button"
+                className="pointer-events-auto absolute -translate-x-1/2 -translate-y-1/2"
+                style={{ left: `${pos.leftPct}%`, top: `${pos.topPct}%` }}
+                onMouseEnter={() => onZoneEnter(zoneId)}
+                onMouseLeave={onZoneLeave}
+                onClick={() => onZoneClick(zoneId)}
+                aria-label={`${ZONE_LABELS[zoneId]} zone`}
+              >
+                <span
+                  className={`inline-flex items-center gap-1 rounded-lg border px-2 py-1 text-xs font-semibold transition-all ${
+                    isActive
+                      ? 'border-cyan-400 bg-cyan-500 text-white'
+                      : isHovered
+                        ? 'border-cyan-300 bg-cyan-600/90 text-white'
+                        : isPulse
+                          ? 'border-cyan-500/50 bg-cyan-700/50 text-cyan-50'
+                          : 'border-slate-400/30 bg-slate-900/55 text-slate-100 backdrop-blur-sm'
+                  }`}
+                >
+                  {ZONE_SHORT_LABELS[zoneId]}
+                  {count > 0 && (
+                    <span className="rounded-md bg-indigo-600 px-1.5 py-0.5 text-[10px] font-extrabold text-white">
+                      {count > 99 ? '99+' : count}
+                    </span>
+                  )}
+                </span>
+              </button>
+            )
+          })}
         </div>
 
         {/* Drag hint */}

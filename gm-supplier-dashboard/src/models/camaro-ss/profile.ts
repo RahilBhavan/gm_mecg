@@ -25,7 +25,8 @@ const MATCH_ORDER: ZoneId[] = [
 export const CAMARO_SS_PROFILE: VehicleModelProfile = {
   id: 'camaro-ss',
   name: 'Chevrolet Camaro SS (2010)',
-  modelUrl: '/models/camaro-ss.glb',
+  // Runtime currently uses the checked-in Tahoe mesh until a converted GLB is finalized.
+  modelUrl: '/models/Car_tahoe.3ds',
   rootRotation: [0, -Math.PI / 2, -Math.PI / 2],
   camera: {
     position: [0, 2.35, 13.5],

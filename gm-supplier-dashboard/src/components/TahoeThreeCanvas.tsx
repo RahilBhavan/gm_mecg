@@ -16,7 +16,7 @@ import { Canvas, useFrame, useLoader, useThree } from '@react-three/fiber'
 import type { ThreeEvent } from '@react-three/fiber'
 import { Bounds, Environment, Html, OrbitControls, OrthographicCamera } from '@react-three/drei'
 import * as THREE from 'three'
-import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js'
+import { TDSLoader } from 'three/addons/loaders/TDSLoader.js'
 
 import { buildZoneMeshMap, getSideProfilePlacementFromBox } from '@/lib/zoneMeshMap'
 import type { ZoneMeshMapping } from '@/lib/zoneMeshMap'
@@ -159,7 +159,7 @@ function TahoeMesh({
   onZoneLeave,
   onZoneClick,
 }: TahoeMeshProps): ReactNode {
-  const loaded = useLoader(GLTFLoader, ACTIVE_VEHICLE_PROFILE.modelUrl)
+  const loaded = useLoader(TDSLoader, ACTIVE_VEHICLE_PROFILE.modelUrl)
   const { camera, invalidate } = useThree()
   const [mapping, setMapping] = useState<ZoneMeshMapping | null>(null)
   const sceneRef = useRef<THREE.Object3D | null>(null)
@@ -178,7 +178,7 @@ function TahoeMesh({
   }, [activeZoneId, hoveredZoneId, pulseZones])
 
   const scene = useMemo(() => {
-    const root = loaded.scene.clone(true)
+    const root = loaded.clone(true)
     root.traverse((child) => {
       if (child instanceof THREE.Mesh) {
         const prev = child.material
