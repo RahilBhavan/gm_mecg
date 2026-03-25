@@ -13,7 +13,7 @@ from typing import Any
 
 import yfinance as yf
 
-TICKER_MAP_PATH = "ticker_source_map.json"
+TICKER_MAP_PATH = os.path.join(os.path.dirname(__file__), "../data", "ticker_source_map.json")
 
 # (company_name, yahoo_symbol, reporting_currency). Keys must match build_auto_excel.py INCLUDE_DETAILS/FINANCIALS.
 # To add more: append (name, symbol, currency); ensure Yahoo quarterly_income_stmt has Total/Operating Revenue (and ideally SG&A, Operating Income).
@@ -205,17 +205,24 @@ def fetch_one_company(name: str, symbol: str, currency: str) -> dict[str, Any] |
     }
 
 
-def fetch_global_quarterly() -> dict[str, dict[str, Any]]:
-    """Iterate GLOBAL_QUARTERLY + ticker_map Yahoo candidates; try SYMBOL_ALIASES when primary has no data."""
+def fetch_global_quarterly() -> tuple[dict[str, dict[str, Any]], list[dict[str, str]]]:
+    """Iterate GLOBAL_QUARTERLY + ticker_map Yahoo candidates; try SYMBOL_ALIASES when primary has no data.
+
+    Returns:
+        Tuple of (results dict, list of skip entries {name, reason, detail}).
+    """
     names_in_static = {t[0] for t in GLOBAL_QUARTERLY}
     from_map = [(n, s, c) for n, s, c in load_quarterly_candidates_from_ticker_map() if n not in names_in_static]
     combined: list[tuple[str, str, str]] = list(GLOBAL_QUARTERLY) + from_map
     out: dict[str, dict[str, Any]] = {}
+    skips: list[dict[str, str]] = []
     for name, sym, cur in combined:
         rec = None
+        err_msg: str | None = None
         try:
             rec = fetch_one_company(name, sym, cur)
         except Exception as e:
+            err_msg = str(e)
             print(f"  Error {name} ({sym}): {e}")
         if not rec and name in SYMBOL_ALIASES:
             for alt_sym, alt_cur in SYMBOL_ALIASES[name]:
@@ -224,19 +231,23 @@ def fetch_global_quarterly() -> dict[str, dict[str, Any]]:
                     if rec:
                         rec["source"] = f"Yahoo Finance ({alt_sym})"
                         break
-                except Exception:
+                except Exception as e2:
+                    err_msg = err_msg or str(e2)
                     continue
         if rec:
             out[name] = rec
             print(f"  OK {name}: {rec['period']} rev_usd={rec['revenue_usd']}")
         else:
+            reason = "error" if err_msg else "no_quarterly_revenue"
+            detail = err_msg if err_msg else f"no quarterly revenue for {sym}"
+            skips.append({"name": name, "reason": reason, "detail": detail})
             print(f"  Skip {name} ({sym}): no quarterly revenue")
-    return out
+    return out, skips
 
 
 if __name__ == "__main__":
-    r = fetch_global_quarterly()
-    path = "latest_quarter_financials.json"
+    r, _ = fetch_global_quarterly()
+    path = os.path.join(os.path.dirname(__file__), "../data", "latest_quarter_financials.json")
     with open(path, "w", encoding="utf-8") as f:
         json.dump(r, f, indent=2)
     print(f"Wrote {len(r)} records to {path}")

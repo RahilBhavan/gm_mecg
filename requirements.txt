@@ -1,2 +1,4 @@
+# Pin to minor versions for reproducible installs. For strict reproducibility use a lockfile (e.g. uv lock, pip freeze).
 openpyxl>=3.1.0
 yfinance>=0.2.40
+pytest>=7.0.0

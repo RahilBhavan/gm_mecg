@@ -11,19 +11,21 @@ import json
 import os
 import sys
 
-import build_auto_excel as build
+import src.build_auto_excel as build
 
-QUARTERLY_OVERRIDES_JSON = "quarterly_overrides.json"
+QUARTERLY_OVERRIDES_JSON = os.path.join(os.path.dirname(__file__), "../data", "quarterly_overrides.json")
 REQUIRED_KEYS = ("period", "revenue_usd")
 OPTIONAL_KEYS = ("sga_usd", "ebit_usd", "source")
 
 
-def main() -> int:
+def main(json_path: str | None = None) -> int:
+    """Validate override keys and schema. Return 0 if valid, 1 if invalid."""
+    path = json_path or QUARTERLY_OVERRIDES_JSON
     include_names = set(build.INCLUDE_DETAILS.keys())
-    if not os.path.isfile(QUARTERLY_OVERRIDES_JSON):
-        print(f"OK: {QUARTERLY_OVERRIDES_JSON} not present (nothing to validate)")
+    if not os.path.isfile(path):
+        print(f"OK: {path} not present (nothing to validate)")
         return 0
-    with open(QUARTERLY_OVERRIDES_JSON, encoding="utf-8") as f:
+    with open(path, encoding="utf-8") as f:
         data = json.load(f)
     errors: list[str] = []
     for key, val in data.items():
@@ -53,4 +55,5 @@ def main() -> int:
 
 
 if __name__ == "__main__":
-    sys.exit(main())
+    path_arg = sys.argv[1] if len(sys.argv) > 1 else None
+    sys.exit(main(path_arg))

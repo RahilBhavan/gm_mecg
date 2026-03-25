@@ -16,9 +16,9 @@ import os
 import sys
 
 # Import from build_auto_excel without running main()
-import build_auto_excel as build  # noqa: E402
+import src.build_auto_excel as build  # noqa: E402
 
-TICKER_MAP_PATH = "ticker_source_map.json"
+TICKER_MAP_PATH = os.path.join(os.path.dirname(__file__), "../data", "ticker_source_map.json")
 OUTPUT_CSV = "companies_not_in_ticker_map.csv"
 
 

@@ -9,7 +9,7 @@ import type { Benchmarks, DashboardData, Supplier, Tier, TierBenchmarks } from '
 import { matchZones } from '../src/lib/zoneMatch'
 
 const ROOT = path.resolve(import.meta.dirname, '..')
-const XLSX_PATH = path.resolve(ROOT, '..', 'auto_suppliers.xlsx')
+const XLSX_PATH = path.resolve(ROOT, '..', 'data', 'auto_suppliers.xlsx')
 const OUT_DIR = path.join(ROOT, 'src', 'generated')
 const OUT_FILE = path.join(OUT_DIR, 'dashboard-data.json')
 const COUNTRY_MAP_PATH = path.join(ROOT, 'src', 'data', 'country_map.json')

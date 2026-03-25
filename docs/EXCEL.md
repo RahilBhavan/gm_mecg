@@ -10,7 +10,7 @@ The main output is `auto_suppliers.xlsx`, produced by `build_auto_excel.py`. It 
 | **Filtered Publics** | Same columns as Supplier Data but only rows that have revenue data. |
 | **Tier 1 Summary** | Aggregated metrics for Tier 1: company count, total/avg/median revenue, average SG&A %, EBIT %, and SG&A+EBIT %. |
 | **Tier 2 Summary** | Same metrics for Tier 2. |
-| **Methodology** | Short methodology (inclusion/exclusion criteria, data sources). Followed by a table of excluded companies and reasons (EXCLUDE_REASONS). |
+| **Methodology** | Report generated date, latest quarter end note, inclusion/exclusion criteria, data sources. Followed by a table of excluded companies and reasons (EXCLUDE_REASONS). |
 
 ## Supplier Data / Filtered Publics columns
 

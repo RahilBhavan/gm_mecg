@@ -21,7 +21,6 @@ import { TDSLoader } from 'three/addons/loaders/TDSLoader.js'
 import { buildZoneMeshMap, getSideProfilePlacementFromBox } from '@/lib/zoneMeshMap'
 import type { ZoneMeshMapping } from '@/lib/zoneMeshMap'
 import type { ZoneId } from '@/types/dashboard'
-import { ZONE_SHORT_LABELS } from '@/data/zones'
 import { ACTIVE_VEHICLE_PROFILE } from '@/models'
 
 /** Orbit polar angle (phi from +Y): narrow band around side view after snap (~80°). */
@@ -140,7 +139,6 @@ type TahoeMeshProps = {
   cameraAligned: boolean
   activeZoneId: ZoneId | null
   hoveredZoneId: ZoneId | null
-  zoneCounts?: Map<ZoneId, number>
   pulseZones?: Set<ZoneId>
   onZoneEnter: (z: ZoneId) => void
   onZoneLeave: () => void
@@ -153,7 +151,6 @@ function TahoeMesh({
   cameraAligned,
   activeZoneId,
   hoveredZoneId,
-  zoneCounts,
   pulseZones,
   onZoneEnter,
   onZoneLeave,
@@ -288,67 +285,7 @@ function TahoeMesh({
       <primitive object={scene} />
       <SideViewCameraSnap vehicleRoot={scene} orbitRef={orbitRef} onSnapped={onSideViewSnapped} />
 
-      {/* 3D Labels rendered via Html overlay */}
-      {mapping &&
-        Array.from(mapping.zoneCentroids.entries()).map(([zid, pos]) => {
-          const count = zoneCounts?.get(zid) ?? 0
-          const isActive = activeZoneId === zid
-          const isHovered = hoveredZoneId === zid
-          const isPulse = pulseZones?.has(zid)
-          const anchor = ACTIVE_VEHICLE_PROFILE.zones.labelAnchors[zid]
-          const labelPos: [number, number, number] = anchor
-            ? [anchor[0], anchor[1], anchor[2]]
-            : [pos.x, pos.y, pos.z]
-
-          return (
-            <Html
-              key={zid}
-              position={labelPos}
-              center
-              // distanceFactor does not work as expected with orthographic zoom
-              // occlude={[scene]} often hides them because centroid is inside the mesh
-              className="z-10 transition-all duration-200"
-              style={{
-                opacity: isHovered || isActive || isPulse ? 1 : 0.85,
-                transform: `scale(${isHovered || isActive ? 1.1 : 1})`,
-              }}
-            >
-              <div 
-                className="group flex cursor-pointer items-center gap-1.5 whitespace-nowrap"
-                onPointerEnter={(e) => { e.stopPropagation(); onZoneEnter(zid); }}
-                onPointerLeave={() => onZoneLeave()}
-                onClick={(e) => { e.stopPropagation(); onZoneClick(zid); }}
-              >
-                <div
-                  className={`flex h-7 items-center justify-center rounded-lg border px-2.5 text-[11px] font-bold shadow-xl transition-all ${
-                    isActive
-                      ? 'border-cyan-400 bg-cyan-500 text-white ring-4 ring-cyan-500/20'
-                      : isHovered
-                        ? 'border-cyan-300 bg-cyan-600/90 text-white'
-                        : isPulse
-                          ? 'border-cyan-500/50 bg-cyan-700/40 text-cyan-50'
-                          : 'border-slate-400/30 bg-slate-900/60 text-slate-100 backdrop-blur-sm'
-                  }`}
-                >
-                  {ZONE_SHORT_LABELS[zid]}
-                </div>
-                {count > 0 && (
-                  <div
-                    className={`flex h-6 w-6 items-center justify-center rounded-lg text-[10px] font-extrabold shadow-lg transition-transform group-hover:scale-110 ${
-                      isActive
-                        ? 'bg-white text-cyan-600'
-                        : isPulse
-                          ? 'bg-cyan-500 text-white'
-                          : 'bg-indigo-600 text-white shadow-indigo-500/30'
-                    }`}
-                  >
-                    {count > 99 ? '99+' : count}
-                  </div>
-                )}
-              </div>
-            </Html>
-          )
-        })}
+      {/* Labels are rendered in TahoeMap as 2D callouts with leader lines for clarity. */}
     </group>
   )
 }
@@ -401,6 +338,13 @@ function TahoeScene({ cameraResetRef, ...meshProps }: SceneProps): ReactNode {
         maxDistance={25}
         minPolarAngle={ORBIT_MIN_POLAR}
         maxPolarAngle={ORBIT_MAX_POLAR}
+        {...(ACTIVE_VEHICLE_PROFILE.camera.orbitMinAzimuth !== undefined &&
+        ACTIVE_VEHICLE_PROFILE.camera.orbitMaxAzimuth !== undefined
+          ? {
+              minAzimuthAngle: ACTIVE_VEHICLE_PROFILE.camera.orbitMinAzimuth,
+              maxAzimuthAngle: ACTIVE_VEHICLE_PROFILE.camera.orbitMaxAzimuth,
+            }
+          : {})}
         dampingFactor={0.08}
         enableDamping
         makeDefault

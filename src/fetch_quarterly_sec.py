@@ -12,10 +12,14 @@ import time
 from urllib.request import Request, urlopen
 from urllib.error import HTTPError, URLError
 
-# SEC requires a descriptive User-Agent (company name and contact)
-USER_AGENT = "AutoSuppliersResearch/1.0 (contact@example.com)"
-TICKER_MAP_PATH = "ticker_source_map.json"
-OUTPUT_PATH = "latest_quarter_financials.json"
+# SEC requires a descriptive User-Agent (company name and contact).
+# Set SEC_USER_AGENT in the environment to identify your entity and contact (e.g. "MyOrg/1.0 (email@example.com)").
+USER_AGENT = os.environ.get(
+    "SEC_USER_AGENT",
+    "AutoSuppliersResearch/1.0 (contact@example.com)",
+).strip() or "AutoSuppliersResearch/1.0 (contact@example.com)"
+TICKER_MAP_PATH = os.path.join(os.path.dirname(__file__), "../data", "ticker_source_map.json")
+OUTPUT_PATH = os.path.join(os.path.dirname(__file__), "../data", "latest_quarter_financials.json")
 SEC_TICKERS_URL = "https://www.sec.gov/files/company_tickers.json"
 SEC_FACTS_BASE = "https://data.sec.gov/api/xbrl/companyfacts/CIK{cik}.json"
 
@@ -33,7 +37,7 @@ OPINC_CONCEPT = "OperatingIncomeLoss"
 
 # When True or env ACCEPT_ANY_LATEST_QUARTER=1, include latest available quarter even if not 2025/2026
 ACCEPT_ANY_LATEST_QUARTER = os.environ.get("ACCEPT_ANY_LATEST_QUARTER", "").strip() == "1"
-SEC_CIK_OVERRIDES_PATH = "sec_cik_overrides.json"
+SEC_CIK_OVERRIDES_PATH = os.path.join(os.path.dirname(__file__), "../data", "sec_cik_overrides.json")
 
 
 def load_ticker_map() -> dict[str, dict]:

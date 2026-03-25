@@ -4,8 +4,12 @@
 Reads latest_quarter_financials.json when present; otherwise uses embedded FINANCIALS.
 Company keys must match INCLUDE_DETAILS (and FINANCIALS for fallback).
 """
+from __future__ import annotations
+
 import json
 import os
+from datetime import date
+
 import openpyxl
 from openpyxl.styles import Font, PatternFill, Alignment, Border, Side
 from openpyxl.utils import get_column_letter
@@ -589,7 +593,7 @@ INCLUDE_DETAILS = {
 
 
 # ─── QUARTERLY DATA (optional) ────────────────────────────────────────────────
-LATEST_QUARTER_JSON = "latest_quarter_financials.json"
+LATEST_QUARTER_JSON = os.path.join(os.path.dirname(__file__), "../data", "latest_quarter_financials.json")
 
 
 def load_latest_quarter_financials():
@@ -771,6 +775,9 @@ def write_methodology_sheet(ws):
     lines = [
         ("METHODOLOGY", True),
         ("", False),
+        (f"Report generated: {date.today().isoformat()}", False),
+        ("Latest quarter end: Q4 2025 / Q1 2026 where available; otherwise annual (see Financial Data below).", False),
+        ("", False),
         ("Inclusion Criteria", True),
         ("  Tier 1: Public company; directly supplies physical auto components; revenue ~$2B+", False),
         ("  Tier 2: Public company; supplies sub-assemblies or specialty components to Tier 1 or OEMs", False),
@@ -837,7 +844,7 @@ def main():
     ws5 = wb.create_sheet()
     write_methodology_sheet(ws5)
 
-    out = "auto_suppliers.xlsx"
+    out = os.path.join(os.path.dirname(__file__), "../data", "auto_suppliers.xlsx")
     wb.save(out)
     print(f"Saved: {out}")
     print(f"  Sheets:      {wb.sheetnames}")

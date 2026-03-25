@@ -14,6 +14,9 @@ export type VehicleModelProfile = {
     far: number
     orbitMinPolar: number
     orbitMaxPolar: number
+    /** When set, limits horizontal orbit so the mesh stays in a side-on arc. */
+    orbitMinAzimuth?: number
+    orbitMaxAzimuth?: number
     fitDelayMs: number
     stableZoomFrames: number
     sideViewDir: Vec3

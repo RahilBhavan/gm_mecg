@@ -27,17 +27,20 @@ export const CAMARO_SS_PROFILE: VehicleModelProfile = {
   name: 'Chevrolet Camaro SS (2010)',
   // Runtime currently uses the checked-in Tahoe mesh until a converted GLB is finalized.
   modelUrl: '/models/Car_tahoe.3ds',
-  rootRotation: [0, -Math.PI / 2, -Math.PI / 2],
+  // Single Y spin: extra -Z roll was presenting the Tahoe .3ds roof toward +Z (read as top-down).
+  rootRotation: [0, -Math.PI / 2, 0],
   camera: {
-    position: [0, 2.35, 13.5],
+    position: [13.5, 0.55, 0],
     zoom: 52,
     near: 0.1,
     far: 500,
-    orbitMinPolar: Math.PI * 0.4,
-    orbitMaxPolar: Math.PI * 0.58,
+    orbitMinPolar: Math.PI * 0.48,
+    orbitMaxPolar: Math.PI * 0.52,
+    orbitMinAzimuth: -0.42,
+    orbitMaxAzimuth: 0.42,
     fitDelayMs: 1280,
     stableZoomFrames: 3,
-    sideViewDir: [0, 0.18, 1],
+    sideViewDir: [1, 0.06, 0],
     sideViewDistScale: 2.2,
   },
   fallback2d: {

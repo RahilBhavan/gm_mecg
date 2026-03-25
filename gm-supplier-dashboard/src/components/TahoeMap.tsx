@@ -40,6 +40,39 @@ function polygonCentroid(poly: string): { x: number; y: number } {
   }
 }
 
+type ZoneCallout = {
+  zoneId: ZoneId
+  anchorLeftPct: number
+  anchorTopPct: number
+  labelLeftPct: number
+  labelTopPct: number
+  side: 'left' | 'right'
+}
+
+/** Map 0–100 layout percentages to SVG user units (matches fallback2d viewBox width/height). */
+function pctToSvgCoord(pct: number, span: number): number {
+  return (pct / 100) * span
+}
+
+function distributeCalloutSlots(
+  zones: Array<{ zoneId: ZoneId; leftPct: number; topPct: number }>,
+  side: 'left' | 'right',
+): ZoneCallout[] {
+  const sorted = [...zones].sort((a, b) => a.topPct - b.topPct)
+  const minTop = 16
+  const maxTop = 84
+  const step = sorted.length > 1 ? (maxTop - minTop) / (sorted.length - 1) : (maxTop - minTop) / 2
+  const labelLeftPct = side === 'left' ? 16 : 84
+  return sorted.map((z, index) => ({
+    zoneId: z.zoneId,
+    anchorLeftPct: z.leftPct,
+    anchorTopPct: z.topPct,
+    labelLeftPct,
+    labelTopPct: minTop + index * step,
+    side,
+  }))
+}
+
 /**
  * 3D vehicle with direct mesh raycasting for zone interaction.
  * SVG overlay shows labels and count badges only — no pointer events.
@@ -116,7 +149,7 @@ export function TahoeMap(): ReactElement {
     return [dims[0] ?? 100, dims[1] ?? 55]
   }, [])
 
-  const fallbackLabelPositions = useMemo(() => {
+  const zoneAnchors = useMemo(() => {
     const out = new Map<ZoneId, { leftPct: number; topPct: number }>()
     for (const zoneId of ZONE_IDS) {
       const poly = ACTIVE_VEHICLE_PROFILE.zones.polygons[zoneId]
@@ -128,6 +161,27 @@ export function TahoeMap(): ReactElement {
     }
     return out
   }, [viewBoxH, viewBoxW])
+
+  const callouts = useMemo(() => {
+    const activeSet = new Set<ZoneId>()
+    for (const zoneId of ZONE_IDS) {
+      const count = zoneCounts.get(zoneId) ?? 0
+      if (count > 0 || zoneId === state.activeZoneId || zoneId === hoveredZoneId || pulseZones.has(zoneId))
+        activeSet.add(zoneId)
+    }
+    const left: Array<{ zoneId: ZoneId; leftPct: number; topPct: number }> = []
+    const right: Array<{ zoneId: ZoneId; leftPct: number; topPct: number }> = []
+    for (const zoneId of activeSet) {
+      const pos = zoneAnchors.get(zoneId)
+      if (!pos) continue
+      if (pos.leftPct < 50) left.push({ zoneId, leftPct: pos.leftPct, topPct: pos.topPct })
+      else right.push({ zoneId, leftPct: pos.leftPct, topPct: pos.topPct })
+    }
+    return [
+      ...distributeCalloutSlots(left, 'left'),
+      ...distributeCalloutSlots(right, 'right'),
+    ]
+  }, [hoveredZoneId, pulseZones, state.activeZoneId, zoneAnchors, zoneCounts])
 
   return (
     <div className="relative w-full">
@@ -147,7 +201,6 @@ export function TahoeMap(): ReactElement {
             }
             activeZoneId={state.activeZoneId}
             hoveredZoneId={hoveredZoneId}
-            zoneCounts={zoneCounts}
             pulseZones={pulseZones}
             onZoneEnter={onZoneEnter}
             onZoneLeave={onZoneLeave}
@@ -156,11 +209,31 @@ export function TahoeMap(): ReactElement {
           />
         </div>
 
-        {/* Always-on 2D label overlay so zones remain visible if 3D loading/mapping fails. */}
+        {/* 2D callouts with leader lines: stable label layout + clear part association. */}
         <div className="pointer-events-none absolute inset-0 z-20">
-          {ZONE_IDS.map((zoneId) => {
-            const pos = fallbackLabelPositions.get(zoneId)
-            if (!pos) return null
+          <svg
+            className="absolute inset-0 h-full w-full"
+            viewBox={ACTIVE_VEHICLE_PROFILE.fallback2d.viewBox}
+            preserveAspectRatio="none"
+            aria-hidden
+          >
+            {callouts.map((c) => {
+              const labelXPct = c.side === 'left' ? c.labelLeftPct + 4 : c.labelLeftPct - 4
+              return (
+                <line
+                  key={`line-${c.zoneId}`}
+                  x1={pctToSvgCoord(c.anchorLeftPct, viewBoxW)}
+                  y1={pctToSvgCoord(c.anchorTopPct, viewBoxH)}
+                  x2={pctToSvgCoord(labelXPct, viewBoxW)}
+                  y2={pctToSvgCoord(c.labelTopPct, viewBoxH)}
+                  stroke="rgba(148,163,184,0.8)"
+                  strokeWidth="0.22"
+                />
+              )
+            })}
+          </svg>
+          {callouts.map((c) => {
+            const zoneId = c.zoneId
             const isActive = state.activeZoneId === zoneId
             const isHovered = hoveredZoneId === zoneId
             const isPulse = pulseZones.has(zoneId)
@@ -170,7 +243,7 @@ export function TahoeMap(): ReactElement {
                 key={zoneId}
                 type="button"
                 className="pointer-events-auto absolute -translate-x-1/2 -translate-y-1/2"
-                style={{ left: `${pos.leftPct}%`, top: `${pos.topPct}%` }}
+                style={{ left: `${c.labelLeftPct}%`, top: `${c.labelTopPct}%` }}
                 onMouseEnter={() => onZoneEnter(zoneId)}
                 onMouseLeave={onZoneLeave}
                 onClick={() => onZoneClick(zoneId)}
